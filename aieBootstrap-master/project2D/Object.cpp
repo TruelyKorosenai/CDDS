@@ -98,7 +98,7 @@ void Object::CalculateHierachy()
 
     translateM1 = translateM1.SetTranslateVectors (m_position); //set the position
     rotateM2.setRotateZ(m_rotate); //set the rotation
-    scaleM3 = scaleM3.SetScaleWithVector(m_scale); //set the scale
+    scaleM3 = scaleM3.SetScaleWithVectors (m_scale); //set the scale
 
     m_modelmatrix = translateM1 * rotateM2 * scaleM3; //times all together to get final result.
 }
