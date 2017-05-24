@@ -26,7 +26,7 @@ protected:
     std::vector<Object *> m_scene;
 
     // creating a tank
-    Tank *m_tankOne;
+   // Tank *m_tankOne;
     Tank *m_tankTwo;
     
     //renderer

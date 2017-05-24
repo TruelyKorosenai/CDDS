@@ -33,19 +33,9 @@ bool Application2D::startup() {
     //--
     // set object tree
     //--
-    // Create a background object. We do this first so that the background will
-    // always be under the tanks.
-  
 
-    // ...and add it to the scene.
-   // m_scene.push_back();
+    // Create a background object first so its behind    
 
-
-    // Create a new tank and store its pointer for later use
-    m_tankOne = new Tank(m_2dRenderer, Vector2(0.6,0.6),Vector2(100, 100));
-
-    // ...and add it to the scene.
-    m_scene.push_back(m_tankOne);
 
     // Create another tank
     m_tankTwo = new Tank(m_2dRenderer, Vector2(0.7, 0.7), Vector2(300, 300));
@@ -93,43 +83,33 @@ void Application2D::update(float deltaTime) {
     /////////////////
     /////Update tank
     ////////////////
-    m_tankOne->rotateHead(-0.2);
-    m_tankOne->rotateBody(0.05);
-
-    Matrix3 something;
+  
+    Matrix3 Pos;
     Vector3 forward(0, 1, 0);
     if (input->isKeyDown(aie::INPUT_KEY_UP))
     {
-        //m_tankTwo->m_position.m_y += 40 * deltaTime;
-        something.setRotateZ(m_tankTwo->m_rotate);
-        
-        forward = something * forward;
-        //forward = forward * something;
-        m_tankTwo->m_position.m_x += forward.m_x * 40 * deltaTime;
-        m_tankTwo->m_position.m_y += forward.m_y * 40 * deltaTime;
-    }
-
-    
-    if (input->isKeyDown(aie::INPUT_KEY_DOWN))
-    {
-        // m_tankTwo->m_position.m_y -= 40 *deltaTime;
+       Pos.setRotateZ(m_tankTwo->m_rotate);
+       forward = Pos * forward;
+       m_tankTwo->m_position.m_x += forward.m_x * 600 * deltaTime;
+       m_tankTwo->m_position.m_y += forward.m_y * 600 * deltaTime;
     }
     
     if (input->isKeyDown(aie::INPUT_KEY_LEFT))
     {
-        m_tankTwo->rotateBody(4 * deltaTime);
+        m_tankTwo->rotateBody(6 * deltaTime);
     }
     
     if (input->isKeyDown(aie::INPUT_KEY_RIGHT))
-        m_tankTwo->rotateBody(-4 * deltaTime);
+        m_tankTwo->rotateBody(-6 * deltaTime);
 
     //rotate head
-    if (input->isKeyDown(aie::INPUT_KEY_DELETE))
-        m_tankTwo->rotateHead(-4*deltaTime);
-        //m_tankTwo->SetScale(-0.05*deltaTime, -0.05*deltaTime);
-
     if (input->isKeyDown(aie::INPUT_KEY_END))
-        m_tankTwo->rotateHead(4 * deltaTime);
+        m_tankTwo->rotateHead(6 * deltaTime);
+
+    if (input->isKeyDown(aie::INPUT_KEY_DELETE))
+        m_tankTwo->rotateHead(-6*deltaTime);
+        
+
     
 
 
@@ -176,28 +156,3 @@ void Application2D::draw() {
 
      m_2dRenderer->end();
 }
-
-
-
-//in the update section!!
-//
-//// use arrow keys to move camera
-//if (input->isKeyDown(aie::INPUT_KEY_UP))
-//m_cameraY += 500.0f * deltaTime;
-//
-//if (input->isKeyDown(aie::INPUT_KEY_DOWN))
-//m_cameraY -= 500.0f * deltaTime;
-//
-//if (input->isKeyDown(aie::INPUT_KEY_LEFT))
-//m_cameraX -= 500.0f * deltaTime;
-//
-//if (input->isKeyDown(aie::INPUT_KEY_RIGHT))
-//m_cameraX += 500.0f * deltaTime;
-//
-//// example of audio
-//if (input->wasKeyPressed(aie::INPUT_KEY_SPACE))
-//m_audio->play();
-//
-//// exit the application
-//if (input->isKeyDown(aie::INPUT_KEY_ESCAPE))
-//quit();

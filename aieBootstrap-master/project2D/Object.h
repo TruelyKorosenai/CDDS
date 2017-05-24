@@ -32,7 +32,7 @@ public:
     float m_rotate;
     Vector2 m_scale;
     Vector2 m_position;
-    Matrix3 m_modelmatrix; //One Matirx which stores the final SRT results after final calculation
+    Matrix3 m_modelmatrix; //One Matirx which stores the final SRT results after final calculations
 
     std::vector<Object> m_children; //used to create a dynamic hierachy of objects
     aie::Texture    *m_texture;
