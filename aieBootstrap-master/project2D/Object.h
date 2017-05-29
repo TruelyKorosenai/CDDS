@@ -5,6 +5,7 @@
 #include <vector>
 
 
+
 // Object represents all visual game objects that can exist in the world.
 // It is a hierarchy of other Objects that represent the copmponent parts of the 
 // game object. It provides the basic functions for animation, movement and rendering.
@@ -14,7 +15,6 @@ class Object
 public:
 
     //--FUNCTIONS--//
-
     Object(aie::Renderer2D *renderer, aie::Texture *texture); //custom constructor
     Object(const Object & other); //copy constructor
     Object();
@@ -32,9 +32,9 @@ public:
     float m_rotate;
     Vector2 m_scale;
     Vector2 m_position;
-    Matrix3 m_modelmatrix; //One Matirx which stores the final SRT results after final calculations
+    Matrix3 m_modelmatrix; //used to combine all objects of one actor together in one final calculation
 
-    std::vector<Object> m_children; //used to create a dynamic hierachy of objects
+    std::vector<Object> m_children; //used to create a hierachy of objects (an unlimited array(dynamic array))
     aie::Texture    *m_texture;
 protected:
     aie::Renderer2D *m_renderer;
