@@ -3,7 +3,9 @@
 #include "Font.h"
 #include "Input.h"
 #include "Tank.h"
-float time = 0;
+#include "Bullet.h"
+#include "BulletPool.h"
+float times = 0;
 
 
 Application2D::Application2D() {
@@ -14,7 +16,7 @@ Application2D::~Application2D() {
 
 }
 
-bool Application2D::startup() {
+bool Application2D::startup() { 
     //--
     //credit fransico for this position code.
     //--
@@ -28,21 +30,28 @@ bool Application2D::startup() {
     //load renderer
     m_2dRenderer = new aie::Renderer2D();
 
+    //new bullet
+    m_bulletPool = new BulletPool(m_2dRenderer);
+
     //load textures
-  
-    //--
-    // set object tree
-    //--
+    m_background = new aie::Texture("./textures/concrete.png");
+
+   
+
     // Create a background object. We do this first so that the background will
     // always be under the tanks.
-  
+    Object *background = new Object;
+    background->SetScale(3, 3); //2.3 //2.3
+    background->SetTexture(m_2dRenderer, m_background);
+    background->SetPosition(halfX, textTop); //0 = x, 1 = y
 
     // ...and add it to the scene.
-   // m_scene.push_back();
+    m_scene.push_back(background);
+
 
 
     // Create a new tank and store its pointer for later use
-    m_tankOne = new Tank(m_2dRenderer, Vector2(0.6,0.6),Vector2(100, 100));
+    m_tankOne = new Tank(m_2dRenderer, Vector2(0.7,0.7), Vector2(100, 100));
 
     // ...and add it to the scene.
     m_scene.push_back(m_tankOne);
@@ -70,7 +79,7 @@ void Application2D::update(float deltaTime) {
     //--
     //credit fransico for the size management below
     //--
-    time += deltaTime;
+    times += deltaTime;
     float halfX = float(this->getWindowWidth()) / 2.0f;
     float halfY = float(this->getWindowHeight()) / 2.0f;
     float textTop = halfY + (halfY - 325);
@@ -93,45 +102,15 @@ void Application2D::update(float deltaTime) {
     /////////////////
     /////Update tank
     ////////////////
-    m_tankOne->rotateHead(-0.2);
-    m_tankOne->rotateBody(0.05);
+    //m_tankOne->rotateHead(-0.2);
+   // m_tankOne->rotateBody(0.05);
+    PlayerOneControls(deltaTime);
+    PlayerTwoControls(deltaTime);
 
-    Matrix3 something;
-    Vector3 forward(0, 1, 0);
-    if (input->isKeyDown(aie::INPUT_KEY_UP))
-    {
-        //m_tankTwo->m_position.m_y += 40 * deltaTime;
-        something.setRotateZ(m_tankTwo->m_rotate);
-        
-        forward = something * forward;
-        //forward = forward * something;
-        m_tankTwo->m_position.m_x += forward.m_x * 40 * deltaTime;
-        m_tankTwo->m_position.m_y += forward.m_y * 40 * deltaTime;
-    }
-
-    
-    if (input->isKeyDown(aie::INPUT_KEY_DOWN))
-    {
-        // m_tankTwo->m_position.m_y -= 40 *deltaTime;
-    }
-    
-    if (input->isKeyDown(aie::INPUT_KEY_LEFT))
-    {
-        m_tankTwo->rotateBody(4 * deltaTime);
-    }
-    
-    if (input->isKeyDown(aie::INPUT_KEY_RIGHT))
-        m_tankTwo->rotateBody(-4 * deltaTime);
-
-    //rotate head
-    if (input->isKeyDown(aie::INPUT_KEY_DELETE))
-        m_tankTwo->rotateHead(-4*deltaTime);
-        //m_tankTwo->SetScale(-0.05*deltaTime, -0.05*deltaTime);
-
-    if (input->isKeyDown(aie::INPUT_KEY_END))
-        m_tankTwo->rotateHead(4 * deltaTime);
-    
-
+    /////////////////
+    /////Update bullet
+    ////////////////
+    m_bulletPool->Update(deltaTime);
 
     /////////////////
     /////Final calculations
@@ -150,18 +129,6 @@ void Application2D::draw() {
 
     // begin drawing sprites
     m_2dRenderer->begin();
-    ////////////////////////////////
-    ///////////START DRAWING///////
-    ///////////////////////////////
-
-
-    /////////////////
-    /////Draw Background
-    ////////////////
-/***********************
-     m_objectbackground1.Draw(Matrix3());
-     m_objectbackground2.Draw(Matrix3());
-***********************/
 
 
      /////////////////
@@ -170,13 +137,110 @@ void Application2D::draw() {
     for (size_t i = 0; i < m_scene.size(); i++)
     {
         m_scene[i]->Draw(Matrix3());
-
-
     }
-
      m_2dRenderer->end();
 }
 
+
+
+/////////////////////////////////////////
+//Player One controls
+////////////////////////////////////////
+void Application2D::PlayerOneControls(float deltaTime)
+{
+    aie::Input* input = aie::Input::getInstance();
+
+    //move tank forward
+    if (input->isKeyDown(aie::INPUT_KEY_UP))
+    {
+        m_tankTwo->MoveForward(deltaTime);
+    }
+
+    //move tank backwards
+    if (input->isKeyDown(aie::INPUT_KEY_DOWN))
+    {
+        m_tankTwo->MoveBackward(deltaTime);
+    }
+
+    //rotate body left
+    if (input->isKeyDown(aie::INPUT_KEY_LEFT))
+    {
+        m_tankTwo->rotateBody(2 * deltaTime);
+    }
+
+    //rotate body right
+    if (input->isKeyDown(aie::INPUT_KEY_RIGHT))
+        m_tankTwo->rotateBody(-2 * deltaTime);
+
+    //rotate head left
+    if (input->isKeyDown(aie::INPUT_KEY_DELETE))
+        m_tankTwo->rotateHead(-1 * deltaTime);
+
+    //rotate head right
+    if (input->isKeyDown(aie::INPUT_KEY_END))
+        m_tankTwo->rotateHead(1 * deltaTime);
+
+    if (input->isKeyDown(aie::INPUT_KEY_SPACE))
+    {
+        m_bulletPool->Spawn(50,50,Vector3(10,0,0));
+       // m_tankTwo->FireBullet(deltaTime);
+    }
+                
+}
+
+
+
+/////////////////////////////////////////
+//Player Two controls
+////////////////////////////////////////
+void Application2D::PlayerTwoControls(float deltaTime)
+{
+    aie::Input* input = aie::Input::getInstance();
+
+    //move tank forward
+    if (input->isKeyDown(aie::INPUT_KEY_W))
+    {
+        m_tankOne->MoveForward(deltaTime);
+    }
+
+    //move tank backwards
+    if (input->isKeyDown(aie::INPUT_KEY_S))
+    {
+        m_tankOne->MoveBackward(deltaTime);
+    }
+
+    //rotate body left
+    if (input->isKeyDown(aie::INPUT_KEY_A))
+    {
+        m_tankOne->rotateBody(2 * deltaTime);
+    }
+
+    //rotate body right
+    if (input->isKeyDown(aie::INPUT_KEY_D))
+        m_tankOne->rotateBody(-2 * deltaTime);
+
+    //rotate head left
+    if (input->isKeyDown(aie::INPUT_KEY_Q))
+        m_tankOne->rotateHead(-1 * deltaTime);
+
+    //rotate head right
+    if (input->isKeyDown(aie::INPUT_KEY_E))
+        m_tankOne->rotateHead(1 * deltaTime);
+}
+
+void Application2D::addToScene(Object *object)
+{
+    m_scene.push_back(object);
+
+}
+
+// Static function to return a reference to the static global instance of APplication2D
+Application2D & Application2D::instance()
+{
+    static Application2D app; // This has global application lifetime!!! NOT local!!!
+
+    return app;
+}
 
 
 //in the update section!!
