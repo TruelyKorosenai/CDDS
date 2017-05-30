@@ -14,7 +14,7 @@ public:
 
 private:
 
-    void Manage(Bullet *bullet);
+    void Manage(Bullet *bullet, float deltaTime);
     void Delete(Bullet *bullet);
 
     std::vector<Bullet *> m_bullets;
