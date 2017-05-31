@@ -186,10 +186,15 @@ void Application2D::PlayerOneControls(float deltaTime)
 		Matrix3 mat1 = m_tankTwo->m_modelmatrix;
 		Matrix3 mat2 = m_tankTwo->m_children[0].m_modelmatrix;
 		Matrix3 mat3 = m_tankTwo->m_children[0].m_children[0].m_modelmatrix;
+
+		float f1 = m_tankTwo->m_rotate;
+		float f2 = m_tankTwo->m_children[0].m_rotate;
+		float f3 = m_tankTwo->m_children[0].m_children[0].m_rotate;
 		
+
 		Vector3 velocity = (mat1 * mat2 * mat3) * Vector3 (0, 1, 0);
 		
-        m_bulletPool->Spawn(m_tankTwo->m_position.m_x, m_tankTwo->m_position.m_y, velocity * 750);
+        m_bulletPool->Spawn(m_tankTwo->m_position.m_x, m_tankTwo->m_position.m_y, f1 + f2 + f3 , velocity * 750);
      }
                 
 }
@@ -240,9 +245,14 @@ void Application2D::PlayerTwoControls(float deltaTime)
 		Matrix3 mat2 = m_tankOne->m_children[0].m_modelmatrix;
 		Matrix3 mat3 = m_tankOne->m_children[0].m_children[0].m_modelmatrix;
 
+		float f1 = m_tankOne->m_rotate;
+		float f2 = m_tankOne->m_children[0].m_rotate;
+		float f3 = m_tankOne->m_children[0].m_children[0].m_rotate;
+
+
 		Vector3 velocity = (mat1 * mat2 * mat3) * Vector3 (0, 1, 0);
 
-		m_bulletPool->Spawn (m_tankOne->m_position.m_x, m_tankOne->m_position.m_y, velocity * 750);
+		m_bulletPool->Spawn (m_tankOne->m_position.m_x, m_tankOne->m_position.m_y, f1 + f2 + f3, velocity * 750);
 	}
 }
 

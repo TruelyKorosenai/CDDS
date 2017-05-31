@@ -14,11 +14,12 @@ BulletPool::~BulletPool()
 
 
 
-void BulletPool::Spawn(float x, float y, Vector3 velocity)
+void BulletPool::Spawn(float x, float y, float rotation, Vector3 velocity)
 {
-    Bullet *bullet = new Bullet(m_renderer); //pass in velcity into bullet.
+	Bullet *bullet = new Bullet(m_renderer); //pass in velcity into bullet.
     bullet->SetScale(1, 1);
     bullet->SetPosition(x, y);
+	bullet->m_rotate = rotation;
 	bullet->SetVelocity(Vector2(velocity.m_x, velocity.m_y));
     m_bullets.push_back(bullet);
     Application2D::instance().addToScene(bullet);

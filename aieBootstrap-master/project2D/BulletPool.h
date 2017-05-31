@@ -7,7 +7,7 @@ public:
     BulletPool(aie::Renderer2D *renderer);
     ~BulletPool();
 
-    void Spawn(float x, float y, Vector3 velocity);
+    void Spawn(float x, float y, float rotation, Vector3 velocity);
     void Update(float deltatime);
 
 
