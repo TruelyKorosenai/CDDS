@@ -180,7 +180,7 @@ void Application2D::PlayerOneControls(float deltaTime)
     if (input->isKeyDown(aie::INPUT_KEY_END))
         m_tankTwo->rotateHead(1 * deltaTime);
 
-    if (input->isKeyDown(aie::INPUT_KEY_SPACE))
+    if (input->wasKeyPressed(aie::INPUT_KEY_L))
     {
 
 		Matrix3 mat1 = m_tankTwo->m_modelmatrix;
@@ -189,9 +189,8 @@ void Application2D::PlayerOneControls(float deltaTime)
 		
 		Vector3 velocity = (mat1 * mat2 * mat3) * Vector3 (0, 1, 0);
 		
-        m_bulletPool->Spawn(m_tankTwo->m_position.m_x, m_tankTwo->m_position.m_y, velocity * 100);
-       // m_tankTwo->FireBullet(deltaTime);
-    }
+        m_bulletPool->Spawn(m_tankTwo->m_position.m_x, m_tankTwo->m_position.m_y, velocity * 750);
+     }
                 
 }
 
@@ -233,6 +232,18 @@ void Application2D::PlayerTwoControls(float deltaTime)
     //rotate head right
     if (input->isKeyDown(aie::INPUT_KEY_E))
         m_tankOne->rotateHead(1 * deltaTime);
+
+	if (input->wasKeyPressed (aie::INPUT_KEY_SPACE))
+	{
+
+		Matrix3 mat1 = m_tankOne->m_modelmatrix;
+		Matrix3 mat2 = m_tankOne->m_children[0].m_modelmatrix;
+		Matrix3 mat3 = m_tankOne->m_children[0].m_children[0].m_modelmatrix;
+
+		Vector3 velocity = (mat1 * mat2 * mat3) * Vector3 (0, 1, 0);
+
+		m_bulletPool->Spawn (m_tankOne->m_position.m_x, m_tankOne->m_position.m_y, velocity * 750);
+	}
 }
 
 void Application2D::addToScene(Object *object)

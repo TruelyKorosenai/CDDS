@@ -8,7 +8,7 @@ Bullet::Bullet(aie::Renderer2D *renderer) //pass in velocity
 	m_timer = 0;
     m_rotate = 0;
     m_renderer = renderer;
-    m_texture = new aie::Texture("./textures/bullet.png");
+    m_texture = new aie::Texture("./textures/Bullet v2.png");
     m_counter = 0;
     //store a vector 3, for velocity, size
 }
