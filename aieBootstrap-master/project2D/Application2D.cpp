@@ -273,25 +273,3 @@ Application2D & Application2D::instance()
 
 
 
-//in the update section!!
-//
-//// use arrow keys to move camera
-//if (input->isKeyDown(aie::INPUT_KEY_UP))
-//m_cameraY += 500.0f * deltaTime;
-//
-//if (input->isKeyDown(aie::INPUT_KEY_DOWN))
-//m_cameraY -= 500.0f * deltaTime;
-//
-//if (input->isKeyDown(aie::INPUT_KEY_LEFT))
-//m_cameraX -= 500.0f * deltaTime;
-//
-//if (input->isKeyDown(aie::INPUT_KEY_RIGHT))
-//m_cameraX += 500.0f * deltaTime;
-//
-//// example of audio
-//if (input->wasKeyPressed(aie::INPUT_KEY_SPACE))
-//m_audio->play();
-//
-//// exit the application
-//if (input->isKeyDown(aie::INPUT_KEY_ESCAPE))
-//quit();
