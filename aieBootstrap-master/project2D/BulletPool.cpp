@@ -14,13 +14,14 @@ BulletPool::~BulletPool()
 
 
 
-void BulletPool::Spawn(float x, float y, Vector3 velocity)
+void BulletPool::Spawn(float x, float y, float rotation, Vector3 velocity)
 {
-    Bullet *bullet = new Bullet(m_renderer); //pass in velcity into bullet.
+	Bullet *bullet = new Bullet(m_renderer); //pass in velcity into bullet.
     bullet->SetScale(1, 1);
     bullet->SetPosition(x, y);
+	bullet->m_rotate = rotation;
+	bullet->SetVelocity(Vector2(velocity.m_x, velocity.m_y));
     m_bullets.push_back(bullet);
-    
     Application2D::instance().addToScene(bullet);
 //    Application2D::addToScene(bullet);
 }
@@ -30,32 +31,32 @@ void BulletPool::Update(float deltatime)
 {
     for (size_t i = 0; i < m_bullets.size(); i++)
     {
-        // The current bullet
-        Bullet *bullet = m_bullets[i];
-
-        bullet->m_counter += deltatime;
-        if (bullet->m_counter > 4)
+		m_bullets[i]->UpdateTimer(deltatime);
+        if (m_bullets[i]->m_timer >= 4.0f)
         {
-            Delete(bullet);
+            Delete(m_bullets[i]);
         }
         else
         {
-            Manage(bullet);
+			
+            Manage(m_bullets[i], deltatime);
             //manage the bullet, collisions etc., increase position in the direction of its velocity.
-        }
+		}
     }
 }
 
 
 
-void BulletPool::Delete(Bullet *bullet)
+void BulletPool::Delete (Bullet *bullet)
 {
-    //delete the bullet
+	//delete the bullet
+	m_bullets.erase(m_bullets.begin());
+	
 }
 
-
-void BulletPool::Manage(Bullet *bullet)
+void BulletPool::Manage(Bullet *bullet, float deltaTime)
 {
-    
     //increase position according to the velocity //moving bullet.
+	
+	bullet->UpdateVelocity (deltaTime);
 }

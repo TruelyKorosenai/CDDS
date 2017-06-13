@@ -111,8 +111,8 @@ void Tank::MoveBackward(float deltatime)
     setrotateMatrix.setRotateZ(m_rotate);
     directionVector = setrotateMatrix * directionVector; //returning a vector from matrix times a vector
 
-    this->m_position.m_x += directionVector.m_x * 40 * deltatime;
-    this->m_position.m_y += directionVector.m_y * 40 * deltatime;
+    this->m_position.m_x += directionVector.m_x * 100 * deltatime;
+    this->m_position.m_y += directionVector.m_y * 100 * deltatime;
 }
 
 
